@@ -1,0 +1,271 @@
+/* 1. Define the Global Color Palette */
+:root {
+    --bg-deep: #060913;
+    --panel-bg: #111827;
+    --border-main: #1f2937;
+    --accent-blue: #38bdf8;
+    --accent-green: #10b981;
+    --text-bright: #f8fafc;
+    --text-muted: #94a3b8;
+}
+
+/* 2. Style the Background Canvas */
+body {
+    font-family: 'Space Grotesk', sans-serif;
+    background-color: var(--bg-deep);
+    background-image: 
+        radial-gradient(circle at 50% 0%, #1e3a8a22 0%, transparent 50%),
+        linear-gradient(#ffffff05 1px, transparent 1px),
+        linear-gradient(90deg, #ffffff05 1px, transparent 1px);
+    background-size: 100% 100%, 30px 30px, 30px 30px;
+    color: var(--text-bright);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/* 3. The Main Card Container */
+.mission-control-panel {
+    background: var(--panel-bg);
+    padding: 2.5rem;
+    border-radius: 16px;
+    border: 1px solid var(--border-main);
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255,255,255,0.05);
+    max-width: 550px;
+    width: 100%;
+}
+
+/* 4. Typography & Headers */
+.header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.status-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(16, 185, 129, 0.1);
+    padding: 4px 12px;
+    border-radius: 20px;
+    border: 1px solid rgba(16, 185, 129, 0.2);
+    margin-bottom: 1rem;
+}
+
+.pulse {
+    width: 8px;
+    height: 8px;
+    background-color: var(--accent-green);
+    border-radius: 50%;
+    animation: pulse-anim 2s infinite;
+}
+
+@keyframes pulse-anim {
+    0% { opacity: 1; box-shadow: 0 0 10px var(--accent-green); }
+    50% { opacity: 0.4; box-shadow: 0 0 2px var(--accent-green); }
+    100% { opacity: 1; box-shadow: 0 0 10px var(--accent-green); }
+}
+
+.status-text {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--accent-green);
+    letter-spacing: 1px;
+}
+
+.header h1 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin: 0 0 0.25rem 0;
+    letter-spacing: -1px;
+    background: linear-gradient(to right, #fff, #94a3b8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.header p {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--accent-blue);
+    font-size: 0.85rem;
+    letter-spacing: 2px;
+    margin: 0;
+}
+
+/* 5. The Upload Drag & Drop Zone */
+.drop-zone {
+    border: 2px dashed rgba(56, 189, 248, 0.3);
+    border-radius: 12px;
+    padding: 3rem 2rem;
+    background-color: rgba(15, 23, 42, 0.5);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.drop-zone:hover, .drop-zone.dragover {
+    border-color: var(--accent-blue);
+    background-color: rgba(56, 189, 248, 0.05);
+    box-shadow: 0 0 20px rgba(56, 189, 248, 0.1);
+}
+
+.drop-zone-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    display: block;
+}
+
+.drop-zone-text {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    letter-spacing: 1px;
+}
+
+.drop-zone-hint {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+#imageInput { display: none; }
+
+/* 6. Image Preview & Radar Scanner Animation */
+#previewContainer {
+    display: none;
+    margin-bottom: 1.5rem;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid var(--border-main);
+    position: relative;
+}
+
+#previewImage {
+    width: 100%;
+    display: block;
+    max-height: 250px;
+    object-fit: cover;
+}
+
+.scanner-overlay {
+    display: none;
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: linear-gradient(to bottom, rgba(56,189,248,0) 0%, rgba(56,189,248,0.2) 50%, rgba(56,189,248,0.8) 100%);
+    background-size: 100% 20%;
+    background-repeat: no-repeat;
+    animation: scan 2s linear infinite;
+    border-bottom: 2px solid var(--accent-blue);
+    z-index: 10;
+}
+
+@keyframes scan {
+    0% { background-position: 0 -100%; top: -20%; }
+    100% { background-position: 0 100%; top: 100%; }
+}
+
+/* 7. Buttons */
+button {
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    color: white;
+    border: 1px solid #3b82f6;
+    padding: 1rem 1.5rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    border-radius: 8px;
+    width: 100%;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+button:hover:not(:disabled) { 
+    box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
+    border-color: #60a5fa;
+}
+
+button:disabled {
+    background: #1e293b;
+    border-color: #334155;
+    color: #64748b;
+    cursor: not-allowed;
+}
+
+.spinner {
+    display: none;
+    width: 18px;
+    height: 18px;
+    border: 2px solid rgba(255,255,255,0.2);
+    border-radius: 50%;
+    border-top-color: var(--accent-blue);
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* 8. Telemetry Results */
+#resultSection {
+    display: none;
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px dashed var(--border-main);
+}
+
+.telemetry-label {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--text-muted);
+    font-size: 0.7rem;
+    letter-spacing: 1px;
+    margin-bottom: 0.5rem;
+}
+
+.result-badge {
+    display: inline-block;
+    background: rgba(16, 185, 129, 0.1);
+    color: var(--accent-green);
+    border: 1px solid rgba(16, 185, 129, 0.3);
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
+    font-weight: 700;
+    font-size: 1.25rem;
+    letter-spacing: 2px;
+    margin-bottom: 1.5rem;
+}
+
+.confidence-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.confidence-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.2rem;
+    color: var(--accent-blue);
+    font-weight: 700;
+}
+
+.confidence-bar-bg {
+    background-color: var(--border-main);
+    height: 6px;
+    border-radius: 3px;
+    width: 100%;
+    margin-top: 0.5rem;
+    overflow: hidden;
+}
+
+.confidence-bar-fill {
+    background: linear-gradient(90deg, #0ea5e9, #38bdf8);
+    height: 100%;
+    width: 0%;
+    transition: width 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+}

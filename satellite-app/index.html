@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VyomLens | Geospatial AI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="mission-control-panel">
+        <div class="header">
+            <div class="status-indicator">
+                <span class="pulse"></span>
+                <span class="status-text">SYSTEM ONLINE</span>
+            </div>
+            <h1>VyomLens</h1>
+            <p>Geospatial Intelligence Engine</p>
+        </div>
+
+        <form id="uploadForm">
+            <div class="drop-zone" id="dropZone">
+                <span class="drop-zone-icon">🛰️</span>
+                <div class="drop-zone-text">INITIALIZE UPLOAD</div>
+                <div class="drop-zone-hint">Drag & drop high-res satellite scan here</div>
+                <input type="file" id="imageInput" accept="image/*" required>
+            </div>
+
+            <div id="previewContainer">
+                <div class="scanner-overlay" id="scannerOverlay"></div>
+                <img id="previewImage" src="" alt="Target Sector Preview">
+            </div>
+
+            <button type="submit" id="submitBtn">
+                <span class="btn-text">RUN NEURAL NETWORK</span>
+                <div class="spinner" id="btnSpinner"></div>
+            </button>
+        </form>
+
+        <div id="resultSection">
+            <div class="telemetry-label">TARGET CLASSIFICATION</div>
+            <div class="result-badge" id="predictionText">--</div>
+            
+            <div class="confidence-container">
+                <div class="telemetry-label">CONFIDENCE INTERVAL</div>
+                <div class="confidence-value" id="confidenceText">0.00%</div>
+            </div>
+            <div class="confidence-bar-bg">
+                <div class="confidence-bar-fill" id="confidenceBar"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Grab all our HTML elements
+        const dropZone = document.getElementById('dropZone');
+        const fileInput = document.getElementById('imageInput');
+        const previewContainer = document.getElementById('previewContainer');
+        const previewImage = document.getElementById('previewImage');
+        const uploadForm = document.getElementById('uploadForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const btnSpinner = document.getElementById('btnSpinner');
+        const btnText = document.querySelector('.btn-text');
+        const resultSection = document.getElementById('resultSection');
+        const scannerOverlay = document.getElementById('scannerOverlay');
+
+        // Allow clicking the drop zone to open the file browser
+        dropZone.addEventListener('click', () => fileInput.click());
+
+        // Handle Drag & Drop visual effects
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('dragover');
+        });
+        dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+        
+        // When a file is dropped into the box
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('dragover');
+            if (e.dataTransfer.files.length) {
+                fileInput.files = e.dataTransfer.files;
+                handleFileSelection();
+            }
+        });
+
+        // When a file is selected manually
+        fileInput.addEventListener('change', handleFileSelection);
+
+        function handleFileSelection() {
+            const file = fileInput.files[0];
+            if (file) {
+                // Swap the drop zone out for the image preview
+                dropZone.style.display = 'none';
+                previewContainer.style.display = 'block';
+                
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    previewImage.src = e.target.result;
+                }
+                reader.readAsDataURL(file);
+
+                // Hide old results if doing a second upload
+                resultSection.style.display = 'none';
+                document.getElementById('confidenceBar').style.width = '0%';
+            }
+        }
+
+        // When the user clicks the final Submit button
+        uploadForm.addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            const file = fileInput.files[0];
+            if (!file) return;
+
+            // Trigger loading animations
+            submitBtn.disabled = true;
+            btnText.innerText = "PROCESSING TELEMETRY...";
+            btnSpinner.style.display = "block";
+            resultSection.style.display = 'none';
+            scannerOverlay.style.display = 'block'; 
+
+            // Package the file for the server
+            const formData = new FormData();
+            formData.append('image', file);
+
+            try {
+                // Send it to our Node.js server
+                const response = await fetch('/predict', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (!response.ok) throw new Error('Server offline');
+                const data = await response.json();
+
+                if (data.error) {
+                    alert("SYSTEM ERROR: " + data.error);
+                } else {
+                    // Update the UI with AI results
+                    resultSection.style.display = 'block';
+                    document.getElementById('predictionText').innerText = data.class.toUpperCase();
+                    
+                    const confPercentage = (data.confidence * 100).toFixed(2);
+                    document.getElementById('confidenceText').innerText = `${confPercentage}%`;
+                    
+                    // Animate the bar filling up
+                    setTimeout(() => {
+                        document.getElementById('confidenceBar').style.width = `${confPercentage}%`;
+                    }, 100);
+                }
+
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Connection to VyomLens Server lost.');
+            } finally {
+                // Turn everything back to normal
+                submitBtn.disabled = false;
+                btnText.innerText = "RUN NEURAL NETWORK";
+                btnSpinner.style.display = "none";
+                scannerOverlay.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>

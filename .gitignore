@@ -1,0 +1,27 @@
+# AI Model Weights (Ignoring old checkpoints, keeping the live production weights)
+satellite_resnet18_phase1.pth
+
+# Node.js
+node_modules/
+# Note: package-lock.json IS tracked to ensure version consistency!
+
+# Python Cache
+__pycache__/
+*.pyc
+*.pyo
+.ipynb_checkpoints/
+
+# Temporary User Uploads 
+# (Ignores all images inside the folder, but keeps the folder itself alive)
+satellite-app/uploads/*
+!satellite-app/uploads/.gitkeep
+
+# Dataset (Prevents uploading massive training image folders)
+data/
+
+# Environment Variables (Security best practice)
+.env
+
+# OS Generated Junk
+.DS_Store
+Thumbs.db
