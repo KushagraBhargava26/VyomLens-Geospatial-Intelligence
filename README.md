@@ -8,8 +8,11 @@
 
 VyomLens is a full-stack deep learning application designed to autonomously classify high-resolution satellite imagery. By bridging a robust Node.js backend with a headless PyTorch neural network, VyomLens provides real-time geospatial intelligence through a modern, aerospace-themed dashboard.
 
-> **View Live Demo / Screenshots:** > *<img width="1919" height="871" alt="image" src="https://github.com/user-attachments/assets/5ce2b7c2-3842-4f2c-9d58-4c64cb69bc1c" />
-*
+> **View Live Demo / Screenshots:** > <img width="1919" height="871" alt="image" src="https://github.com/user-attachments/assets/5ce2b7c2-3842-4f2c-9d58-4c64cb69bc1c" />
+<img width="1919" height="867" alt="image" src="https://github.com/user-attachments/assets/21531e69-9266-4f85-be1d-4dbdaab6e2ec" />
+<img width="1919" height="866" alt="image" src="https://github.com/user-attachments/assets/5e4dee16-5f25-49f7-b8b7-faa64a54fdc1" />
+
+
 
 ---
 
