@@ -10,7 +10,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 7860;
 
 app.use(cors());
 app.use(express.static(__dirname));
@@ -73,7 +73,7 @@ app.post("/predict", upload.single("image"), (req, res) => {
   });
 });
 
-app.listen(port, () => {
+app.listen(port, '0.0.0.0' , () => {
   console.log(`VyomLens Server running on http://localhost:${port}`);
   console.log(`System checks passed. Awaiting telemetry...`);
 });

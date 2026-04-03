@@ -1,0 +1,21 @@
+# Node dependencies and logs
+node_modules/
+npm-debug.log
+
+# Python cache and environments
+__pycache__/
+*.pyc
+.pytest_cache/
+venv/
+env/
+
+# Git history (not needed inside the production container)
+.git/
+.gitignore
+
+# Environment variables (Security best practice)
+.env
+
+# Local application data we don't want to push to production
+uploads/
+training_environment/
