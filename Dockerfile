@@ -1,27 +1,31 @@
-# 1. Use a hybrid image for Node and Python
+# Use a hybrid image with Python and Node.js
 FROM nikolaik/python-nodejs:python3.10-nodejs18
 
-# 2. Switch to the existing non-root user (ID 1000 is 'pn' in this image)
-USER 1000
-ENV HOME=/home/pn \
-    PATH=/home/pn/.local/bin:$PATH
+# Environment
+ENV HOME=/home/pn
+ENV PATH=$HOME/.local/bin:$PATH
 
-# 3. Set the initial working directory
+USER 1000
+
+# Root project directory
 WORKDIR $HOME/app
 
-# 4. Install Python dependencies
+# Install Python dependencies
 COPY --chown=1000 requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# 5. Copy your entire project into the container
+# Copy project
 COPY --chown=1000 . .
 
-# 6. Change directory into your app folder to install Node dependencies
+# Move to Node application
 WORKDIR $HOME/app/satellite-app
+
+# Install Node dependencies
 RUN npm install
 
-# 7. Expose the required port
+# Render provides the PORT environment variable
+ENV PORT=7860
 EXPOSE 7860
 
-# 8. Start the Node server
+# Start application
 CMD ["node", "server.js"]
