@@ -1,27 +1,53 @@
-# AI Model Weights (Ignoring old checkpoints, keeping the live production weights)
-satellite_resnet18_phase1.pth
-
-# Node.js
-node_modules/
-# Note: package-lock.json IS tracked to ensure version consistency!
-
-# Python Cache
+# -------------------------
+# Python
+# -------------------------
 __pycache__/
-*.pyc
+*.py[cod]
 *.pyo
+*.pyd
+
+# -------------------------
+# Virtual Environments
+# -------------------------
+venv/
+.venv/
+env/
+
+# -------------------------
+# Jupyter
+# -------------------------
 .ipynb_checkpoints/
+*.ipynb
 
-# Temporary User Uploads 
-# (Ignores all images inside the folder, but keeps the folder itself alive)
-satellite-app/uploads/*
-!satellite-app/uploads/.gitkeep
+# -------------------------
+# Training Files
+# -------------------------
+training_environment/
 
-# Dataset (Prevents uploading massive training image folders)
-data/
+# -------------------------
+# IDE
+# -------------------------
+.vscode/
+.idea/
 
-# Environment Variables (Security best practice)
-.env
-
-# OS Generated Junk
+# -------------------------
+# OS Files
+# -------------------------
 .DS_Store
 Thumbs.db
+
+# -------------------------
+# Logs
+# -------------------------
+*.log
+
+# -------------------------
+# Environment Variables
+# -------------------------
+.env
+.env.*
+
+# -------------------------
+# Pytest Cache
+# -------------------------
+.pytest_cache/
