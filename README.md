@@ -34,20 +34,26 @@ VyomLens is a full-stack deep learning application designed to autonomously clas
 
 ---
 
-## 📁 Repository Architecture
-
-The project is strictly separated into a research environment and a production application:
+## 📁 Project Structure
 
 ```text
-VyomLens/
-├── training_environment/          # AI Research & Testing Sandbox
-│   ├── main.ipynb                 # Data augmentation, training, and validation logic
-│   └── satellite_resnet18_phase2.pth  # Local weights for quick Jupyter testing
+VyomLens-Geospatial-Intelligence/
 │
-└── satellite-app/                 # Production Web Application
-    ├── uploads/                   # Temporary Multer storage for incoming telemetry
-    ├── index.html                 # Frontend UI
-    ├── style.css                  # Animations and theming
-    ├── server.js                  # Node.js/Express traffic controller
-    ├── model.py                   # Python inference script
-    └── satellite_resnet18_phase2.pth  # Live production model weights
+├── satellite-app/
+│   ├── uploads/
+│   │   └── .gitkeep                 # Stores uploaded images temporarily
+│   │
+│   ├── index.html                   # Frontend interface
+│   ├── style.css                    # Styling
+│   ├── server.js                    # Express.js backend server
+│   ├── model.py                     # PyTorch inference script
+│   ├── satellite_resnet18_phase2.pth# Trained ResNet18 model
+│   ├── package.json                 # Node.js dependencies
+│   ├── package-lock.json
+│   └── .gitignore
+│
+├── Dockerfile                       # Docker configuration
+├── requirements.txt                 # Python dependencies
+├── .gitignore                       # Git ignore rules
+└── README.md                        # Project documentation
+```
