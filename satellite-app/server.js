@@ -33,7 +33,9 @@ app.post("/predict", upload.single("image"), (req, res) => {
   const imagePath = req.file.path;
 
   // SPAN THE PYTHON PROCESS! This is where Node talks to Python
-  const python = spawn("python", ["model.py", imagePath]);
+  const pythonCommand = process.env.PYTHON || (process.platform === "win32" ? "python" : "python3");
+
+  const python = spawn(pythonCommand, ["model.py", imagePath]);
 
   let result = "";
 
@@ -73,7 +75,7 @@ app.post("/predict", upload.single("image"), (req, res) => {
   });
 });
 
-app.listen(port, '0.0.0.0' , () => {
+app.listen(port, "0.0.0.0", () => {
   console.log(`VyomLens Server running on http://localhost:${port}`);
   console.log(`System checks passed. Awaiting telemetry...`);
 });
